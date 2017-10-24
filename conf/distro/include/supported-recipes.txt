@@ -1,0 +1,7 @@
+bind@core
+dhcp@core
+dnsmasq@networking-layer
+grub-efi@core
+mtools@core
+rng-tools@core
+syslinux@core

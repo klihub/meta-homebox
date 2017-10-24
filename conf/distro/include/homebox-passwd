@@ -1,0 +1,2 @@
+dhcp:x:800:800::/:/sbin/nologin
+bind:x:801:801::/:/sbin/nologin

@@ -17,3 +17,5 @@ REFKIT_IMAGE_EXTRA_INSTALL += "${REFKIT_IMAGE_HOMEBOX_EXTRA_INSTALL}"
 # REFKIT_IMAGE_HOMEBOX_EXTRA_FEATURES_append = " dev-pkgs"
 
 inherit refkit-image
+
+WKS_FILE = "refkit-syslinux.wks.in"

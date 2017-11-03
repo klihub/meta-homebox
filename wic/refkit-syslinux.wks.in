@@ -1,0 +1,9 @@
+# short-description: Create a DOS disk image with syslinux bootloader
+# long-description: Creates a partitioned disk image that the user
+# can directly dd to boot media. The selected bootloader is syslinux.
+
+part /boot --source rootfs --rootfs-dir=${IMAGE_ROOTFS}/boot --fstype=vfat --fixed-size ${REFKIT_VFAT_MB}M --label boot --align 1024 --use-uuid
+
+part / --source rootfs --rootfs-dir=${IMAGE_ROOTFS} ${REFKIT_IMAGE_SIZE} --fstype=ext4 --label rootfs --align 1024 --uuid ${REMOVABLE_MEDIA_ROOTFS_PARTUUID_VALUE}
+
+bootloader --ptable msdos

@@ -2,8 +2,10 @@
 # long-description: Creates a partitioned disk image that the user
 # can directly dd to boot media. The selected bootloader is syslinux.
 
-part /boot --source bootimg-pcbios --fstype=vfat --fixed-size ${REFKIT_VFAT_MB}M --label boot --active --align 1024
+part /boot --source syslinux-alix --fstype=vfat --fixed-size ${REFKIT_VFAT_MB}M --label boot --active --align 1024
 
-part / --source rootfs --rootfs-dir=${IMAGE_ROOTFS} ${REFKIT_IMAGE_SIZE} --fstype=ext4 --label rootfs --align 1024 --uuid ${REMOVABLE_MEDIA_ROOTFS_PARTUUID_VALUE}
+part / --source rootfs --fstype=ext4 ${REFKIT_IMAGE_SIZE} --rootfs-dir=${IMAGE_ROOTFS} --label rootfs1 --align 1024
 
-bootloader --ptable msdos --timeout=5 --append="initrd=/initrd"
+part / --source rootfs --fstype=ext4 ${REFKIT_IMAGE_SIZE} --rootfs-dir=${IMAGE_ROOTFS} --label rootfs2 --align 1024
+
+bootloader --ptable msdos --timeout=50 --append="initrd=/initrd root=LABEL=rootfs1"

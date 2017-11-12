@@ -13,5 +13,6 @@ RDEPENDS_${PN} = " \
     openssh-sshd \
     openssh-ssh \
     openssh-scp \
+    tcpdump \
 "
 

@@ -5,3 +5,5 @@ grub-efi@core
 mtools@core
 rng-tools@core
 syslinux@core
+tcpdump@networking-layer
+

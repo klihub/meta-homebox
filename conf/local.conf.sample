@@ -1,0 +1,89 @@
+#
+# Machine Selection
+#
+# By default build for alix
+#
+
+MACHINE ??= "alix"
+
+# Image formats
+#
+# By default build a WIC image and an accompanying bmap files for efficient
+# writing to real storage media by bmaptool.
+#
+
+HOMEBOX_IMAGE_TYPES = "wic.xz wic.bmap"
+
+#
+# Where to put downloaded tarballs/artefacts, sstate cache, and build output.
+#
+
+DL_DIR ?= "${TOPDIR}/downloads"
+SSTATE_DIR ?= "${TOPDIR}/sstate-cache"
+# TMPDIR ?= "${TOPDIR}/tmp"
+
+#
+# Default distro (policy config).
+#
+
+DISTRO ?= "homebox"
+
+#
+# Package Management Configuration
+#
+
+PACKAGE_CLASSES ?= "package_ipk"
+
+#
+# Extra image configuration defaults
+#
+#  "dbg-pkgs"       - add -dbg packages for all installed packages
+#                     (adds symbol information for debugging/profiling)
+#  "dev-pkgs"       - add -dev packages for all installed packages
+#                     (useful if you want to develop against libs in the image)
+#  "tools-sdk"      - add development tools (gcc, make, pkgconfig etc.)
+#  "tools-debug"    - add debugging tools (gdb, strace)
+#  "tools-profile"  - add profiling tools (oprofile, exmap, lttng, valgrind)
+#  "tools-testapps" - add useful testing tools (ts_print, aplay, arecord etc.)
+#  "debug-tweaks"   - make an image suitable for development
+#
+
+HOMEBOX_IMAGE_EXTRA_FEATURES = "tools-debug debug-tweaks"
+
+#
+# Additional image features
+#
+# The following is a list of additional classes to use when building images which
+# enable extra features. Some available options which can be included in this variable
+# are:
+#   - 'buildstats' collect build statistics
+#   - 'image-mklibs' to reduce shared library files size for an image
+#   - 'image-prelink' in order to prelink the filesystem image
+#   - 'image-swab' to perform host system intrusion detection
+# NOTE: if listing mklibs & prelink both, then make sure mklibs is before prelink
+# NOTE: mklibs also needs to be explicitly enabled for a given image, see local.conf.extended
+
+USER_CLASSES ?= "buildstats image-mklibs"
+
+#
+# Interactive shell configuration
+#
+
+PATCHRESOLVE = "noop"
+
+#
+# Disk Space Monitoring during the build
+#
+
+BB_DISKMON_DIRS ?= "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    STOPTASKS,${SSTATE_DIR},1G,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K \
+    ABORT,${SSTATE_DIR},100M,1K"
+
+# CONF_VERSION is increased each time build/conf/ changes incompatibly and is used to
+# track the version of this file when it was generated. This can safely be ignored if
+# this doesn't mean anything to you.
+CONF_VERSION = "3"

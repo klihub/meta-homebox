@@ -1,0 +1,21 @@
+# LAYER_CONF_VERSION is increased each time build/conf/bblayers.conf
+# changes incompatibly
+LCONF_VERSION = "11"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+HOMEBOX_LAYERS = " \
+    ##OEROOT##/meta \
+    ##OEROOT##/meta-selftest \
+    ##OEROOT##/../meta-openembedded/meta-networking \
+    ##OEROOT##/../meta-openembedded/meta-oe \
+    ##OEROOT##/../meta-openembedded/meta-filesystems \
+    ##OEROOT##/../meta-openembedded/meta-perl \
+    ##OEROOT##/../meta-openembedded/meta-python \
+    ##OEROOT##/../meta-alix \
+    ##OEROOT##/../meta-homebox \
+"
+
+BBLAYERS = "${HOMEBOX_LAYERS}"
+BBLAYERS_NON_REMOVABLE ?= "${HOMEBOX_LAYERS}"

@@ -1,0 +1,3 @@
+HOMEBOX_INITRAMFS = "homebox-initramfs"
+
+INITRD_IMAGE ?= "${HOMEBOX_INITRAMFS}"

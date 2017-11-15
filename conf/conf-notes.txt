@@ -1,0 +1,2 @@
+Common targets are:
+    homebox-image               build a HomeBox image

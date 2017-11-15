@@ -1,0 +1,11 @@
+# short-description: Create a DOS disk image with syslinux bootloader
+# long-description: Creates a partitioned disk image that the user
+# can directly dd to boot media. The selected bootloader is syslinux.
+
+part /boot --source syslinux-alix --fstype=vfat --fixed-size ${HOMEBOX_VFAT_MB}M --label ${HOMEBOX_LABEL_BOOT} --active --align 1024
+
+part / --source rootfs --fstype=ext4 ${HOMEBOX_IMAGE_SIZE} --rootfs-dir=${IMAGE_ROOTFS} --label ${HOMEBOX_LABEL_ROOT1} --align 1024
+
+part / --source rootfs --fstype=ext4 ${HOMEBOX_IMAGE_SIZE} --rootfs-dir=${IMAGE_ROOTFS} --label ${HOMEBOX_LABEL_ROOT2} --align 1024
+
+bootloader --ptable msdos --timeout=50 --append="initrd=/initrd root=LABEL=${HOMEBOX_LABEL_ROOT1"

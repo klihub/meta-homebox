@@ -15,6 +15,7 @@ HOMEBOX_LAYERS = " \
     ##OEROOT##/../meta-openembedded/meta-python \
     ##OEROOT##/../meta-alix \
     ##OEROOT##/../meta-homebox \
+    ##OEROOT##/../meta-casync \
 "
 
 BBLAYERS = "${HOMEBOX_LAYERS}"

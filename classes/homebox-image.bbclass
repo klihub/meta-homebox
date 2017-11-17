@@ -19,6 +19,7 @@ require conf/image/features/tools-debug.inc
 require conf/image/features/tools-develop.inc
 require conf/image/features/autologin.inc
 require conf/image/features/authorized-keys.inc
+require conf/image/features/casync-update.inc
 
 # Configure the image types we build.
 require conf/image/types.inc
@@ -33,6 +34,7 @@ IMAGE_FEATURES += " \
     authorized-keys \
     networking \
     ssh-server-openssh \
+    casync-update \
     ${HOMEBOX_IMAGE_EXTRA_FEATURES} \
 "
 

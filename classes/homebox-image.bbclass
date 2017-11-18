@@ -14,12 +14,13 @@ IMAGE_INSTALL = " \
 "
 
 # Declare image features.
+require conf/image/features/authorized-keys.inc
+require conf/image/features/preset-password.inc
+require conf/image/features/autologin.inc
+require conf/image/features/casync-update.inc
 require conf/image/features/networking.inc
 require conf/image/features/tools-debug.inc
 require conf/image/features/tools-develop.inc
-require conf/image/features/autologin.inc
-require conf/image/features/authorized-keys.inc
-require conf/image/features/casync-update.inc
 
 # Configure the image types we build.
 require conf/image/types.inc
@@ -29,10 +30,12 @@ require conf/image/naming.inc
 require conf/image/labels.inc
 require conf/image/initramfs.inc
 
-# Choose image features.
+# Choose and configure image features.
+HOMEBOX_PRESET_PASSWORDS ?= "root=root"
+
 IMAGE_FEATURES += " \
+    preset-password \
     authorized-keys \
-    networking \
     ssh-server-openssh \
     casync-update \
     ${HOMEBOX_IMAGE_EXTRA_FEATURES} \

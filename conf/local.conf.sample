@@ -87,3 +87,8 @@ BB_DISKMON_DIRS ?= "\
 # track the version of this file when it was generated. This can safely be ignored if
 # this doesn't mean anything to you.
 CONF_VERSION = "3"
+
+# If you have a board with a fast enough serial port, youcan enable this-
+# WARNING: alix boards default to 38400. You can change that setup from
+# the BIOS settings (which you can enter by pressing S1 during power-on).
+# SERIAL_CONSOLE = "115200 ttyS0"

@@ -20,6 +20,7 @@ require conf/image/features/autologin.inc
 require conf/image/features/casync-update.inc
 require conf/image/features/networking.inc
 require conf/image/features/editors.inc
+require conf/image/features/gen-config.inc
 require conf/image/features/tools-debug.inc
 require conf/image/features/tools-develop.inc
 
@@ -40,6 +41,7 @@ IMAGE_FEATURES += " \
     ssh-server-openssh \
     casync-update \
     editors \
+    gen-config \
     ${HOMEBOX_IMAGE_EXTRA_FEATURES} \
 "
 

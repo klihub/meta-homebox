@@ -1,17 +1,29 @@
 # This class creates an image which is booted using syslinux.
 #
-# The image has an MSDOS partition table and comes with 3 partitions:
+# The image has an MSDOS partition table and comes with 3 or 4 partitions:
 #  - a VFAT boot partition
 #  - a primary rootfs partition
 #  - a secondary rootfs partition
+#  - an optional config/data partition
 
 # This is the default WIC kickstart file we use. 
 WKS_FILE ??= "homebox-syslinux.wks.in"
 
 # These are the default partition sizes (in megabytes)
 HOMEBOX_BOOTFS_SIZE ??= "64"
-HOMEBOX_CONFFS_SIZE ??= "16"
 HOMEBOX_ROOTFS_SIZE ??= "512"
+HOMEBOX_CONFFS_SIZE ??= "64"
+
+# If the gen-config image feature is enabled create a /conf partition.
+HOMEBOX_WIC_EXTRA_PARTITIONS = " \
+  ${@bb.utils.contains('IMAGE_FEATURES', 'gen-config', \
+                       '${HOMEBOX_WIC_CONFFS_PARTITION}', '', d)} \
+"
+
+HOMEBOX_WIC_ROOT_EXCLUDES = " \
+  ${@bb.utils.contains('IMAGE_FEATURES', 'gen-config', \
+                       '${HOMEBOX_WIC_CONFFS_EXCLUDE}', '', d)} \
+"
 
 # Produce WIC debug output.
 WIC_CREATE_EXTRA_ARGS += " -D"

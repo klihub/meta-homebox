@@ -7,6 +7,7 @@ FEATURE_PACKAGES_gen-config = " \
 "
 
 HOMEBOX_CONFIG_FILES ?= ""
+HOMEBOX_PRISTINE_ETC ?= "/.pristine-etc"
 
 homebox_config_copy_files () {
     # Copy the configuration file(s) in place. By convention the first one
@@ -35,10 +36,23 @@ LABEL=${HOMEBOX_LABEL_CONFFS}    /conf    auto    defaults    0  0
 EOF
 }
 
+do_homebox_config_pristine_etc () {
+   mv ${IMAGE_ROOTFS}/etc ${IMAGE_ROOTFS}${HOMEBOX_PRISTINE_ETC}
+   mkdir ${IMAGE_ROOTFS}/etc
+}
+
 ROOTFS_POSTPROCESS_COMMAND += " \
     ${@bb.utils.contains('IMAGE_FEATURES', 'gen-config', \
           'homebox_config_copy_files; homebox_config_fstab;', '', d)} \
 "
+
+python () {
+    # We try to make sure we rename the original rootfs /etc as late as
+    # possible by hooking the task for it right before wic image creation.
+    if bb.utils.contains('IMAGE_FEATURES', 'gen-config', True, False, d):
+       bb.build.addtask('do_homebox_config_pristine_etc',
+                        'do_image_wic', 'do_image', d)
+}
 
 # Extra partition to create if our image feature is enabled.
 HOMEBOX_WIC_CONFFS_PARTITION = " \

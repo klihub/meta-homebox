@@ -8,15 +8,11 @@ PV = "2017.11"
 
 SRC_URI = " \
   git://github.com/klihub/gen-config.git;protocol=https \
+  file://initramfs-gen-config \
 "
-SRCREV = "8b4e583aa50802f88d1f2cae063bf96d434817d0"
+SRCREV = "e96692a0e013bc7ae0ba937626c17c934e0a48e8"
 
 S = "${WORKDIR}/git"
-
-FILES_${PN} += " \
-    ${datadir} \
-    ${systemd_unitdir}/system \
-"
 
 # The non-obvious ones are for io: ipaddress, crypt: hashlib, shell: glob.
 RDEPENDS_${PN} += " \
@@ -27,19 +23,22 @@ RDEPENDS_${PN} += " \
     python3-shell \
 "
 
-SYSTEMD_SERVICE_${PN} = "conffs-prepare.service conffs-mount.service"
-SYSTEMD_AUTO_ENABLE = "enable"
+PACKAGES += "initramfs-module-gen-config"
 
-inherit distutils3 systemd
+FILES_${PN} += " \
+    ${datadir} \
+"
+
+FILES_initramfs-module-gen-config = " \
+    /init.d/98-genconfig \
+"
+
+inherit distutils3
 
 do_install_append () {
-    # distutils3 runs setup.py with the options
-    #   --prefix=${D}/${prefix} --install-data=${D}/${datadir}
-    # with datadir being set to /usr/share. This screws things up for
-    # us, because relative paths get relocated under /usr/share instead
-    # of the intended /usr. We try to fix things up here...
-    if [ -d ${D}/${datadir}/lib/systemd ]; then
-        mkdir -p ${D}/${libdir}
-        mv -v ${D}/${datadir}/lib/systemd ${D}/${libdir}
-    fi
+    W="${WORKDIR}"
+
+    # Install our initramfs module.
+    install -m 0755 -d ${D}/init.d
+    install -m 0755 -T ${W}/initramfs-gen-config ${D}/init.d/98-genconfig
 }

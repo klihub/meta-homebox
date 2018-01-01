@@ -1,0 +1,46 @@
+#!/bin/sh
+
+CONFFS_LABEL=config
+CONFFS_PATH=/conf
+
+genconfig_enabled () {
+    info "gen-config: checking if should be active..."
+    if [ ! -e /dev/disk/by-label/$CONFFS_LABEL -o \
+         ! -e $ROOTFS_DIR/.pristine-etc -o ! -e $ROOTFS_DIR/conf ]; then
+        info "gen-config: disabled"
+        return 1
+    else
+        return 0
+    fi
+}
+
+genconfig_run () {
+    root=$ROOTFS_DIR
+    conf=$CONFFS_PATH
+
+    info "gen-config: mounting config fs (LABEL=$CONFFS_LABEL)..."
+    if ! mount LABEL=$CONFFS_LABEL $root$conf; then
+        fatal "gen-config: failed to mount LABEL=$CONFFS_LABEL."
+    fi
+
+    for fs in proc sys dev; do
+        info "gen-config: bind-mounting $fs to $root..."
+        if ! mount --bind /$fs $root/$fs; then
+            fatal "gen-config: failed to bind-mount /$fs."
+        fi
+    done
+
+    export ROOTFS_DIR
+    export CONFFS_PATH
+    if ! chroot $root /usr/share/gen-config/hooks/run-hooks $conf; then
+        fatal "gen-config: gen-config hooks failed."
+    fi
+    unset CONFFS_PATH
+
+    for fs in proc sys dev; do
+        info "gen-config: umount $fs from $root..."
+        umount $root/$fs
+    done
+
+    return 0
+}

@@ -23,7 +23,7 @@ homebox_preset_passwords () {
 
         case $_p in
              \$?\$*) ;;
-             *)      _p=$(python -c "import crypt; print crypt.crypt('$_p')");;
+             *)      _p=$(python3 -c "import crypt; print(crypt.crypt('$_p'))");;
         esac
 
         bbnote "Setting password entry for $_u..."

@@ -88,7 +88,18 @@ BB_DISKMON_DIRS ?= "\
 # this doesn't mean anything to you.
 CONF_VERSION = "3"
 
-# If you have a board with a fast enough serial port, youcan enable this-
+# If you have a board with a fast enough serial port, you can enable this-
 # WARNING: alix boards default to 38400. You can change that setup from
 # the BIOS settings (which you can enter by pressing S1 during power-on).
 # SERIAL_CONSOLE = "115200 ttyS0"
+
+# We don't need/want any of this. If you do, update accordingly.
+DISTRO_FEATURES_remove = "x11 alsa bluetooth pcmcia nfc pulseaudio gobject-introspection-data"
+DISTRO_FEATURES_NATIVE_remove = "x11"
+DISTRO_FEATURES_NATIVESDK_remove = "x11"
+
+# Rootfs size in megabytes.
+HOMEBOX_ROOTFS_SIZE = "800"
+
+# SSH authorized keys to install in the image.
+#HOMEBOX_AUTHORIZED_KEYS = "/home/kli/.ssh/id_rsa.pub"
